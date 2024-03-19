@@ -1,5 +1,21 @@
 .App {
   text-align: center;
+  background-image: url('https://getwallpapers.com/wallpaper/full/b/3/b/249976.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  
+}
+
+.white-color {
+  color: white;
 }
 
 .App-logo {
