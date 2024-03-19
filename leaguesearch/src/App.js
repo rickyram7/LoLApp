@@ -10,6 +10,7 @@ function App() {
   const [participantsData, setParticipantsData] = useState([]);
   const [winningTeam, setWinningTeam] = useState([]);
   const [currentMatchIndex, setCurrentMatchIndex] = useState(0);
+  const[playerRank, setPlayerRank] = useState([]);
   
 
 
@@ -23,6 +24,19 @@ function App() {
     }
   }, [matchIDs, currentMatchIndex]);
 
+  function searchRank(summonerID) {
+    // Set up the API call
+    var APICallString = "https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerID + "?api_key=" + API_KEY;
+    
+    // Handle the API call
+    axios.get(APICallString).then(function (response) {
+      console.log(response.data);
+      setPlayerRank(response.data[0]);
+    }).catch(function (error) {
+      console.log(error);
+    });
+  }
+
   function searchForPlayer(event) {
     // Set up the API call
     var APICallString = "https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + searchText + "?api_key=" + API_KEY;
@@ -32,6 +46,7 @@ function App() {
       console.log(response.data);
       setPlayerData(response.data);
       searchMatchIDs(response.data.puuid);
+      searchRank(response.data.id);
     }).catch(function (error) {
       console.log(error);
     });
@@ -111,6 +126,9 @@ function App() {
                 <div key={index}>
                   <h2 className='white-color'>Summoner Name: {participant.summonerName}</h2>
                   <img width='200' height='200' src={'http://ddragon.leagueoflegends.com/cdn/14.5.1/img/profileicon/' + participant.profileIcon + '.png'} alt="Icon Unavailable"></img>
+                  <h3 className='white-color'>{playerRank.tier} {playerRank.rank} {playerRank.leaguePoints} LP</h3>
+                  <h3 className='white-color'>W/L: {playerRank.wins}-{playerRank.losses}</h3>
+                  
                   <h3 className='white-color'> Position: {participant.individualPosition} </h3>
                   <h2 className='white-color'>Champion: {participant.championName} </h2>
                   <img width='150' height='150' src={'http://ddragon.leagueoflegends.com/cdn/14.5.1/img/champion/' + participant.championName + '.png'} alt="Champion Unavailable"></img>
